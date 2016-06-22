@@ -1,0 +1,44 @@
+﻿@model WebApplication2.Models.variablemodel
+
+@{
+    ViewBag.Title = "varadd";
+}
+
+<h2>Add Variable</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Variable Model</legend>
+
+        <div>
+            @Html.LabelFor(Model => Model.Id)
+        </div>
+        <div><div>
+            @Html.LabelFor(Model => Model.Id)
+        </div>
+        <div>
+            @Html.EditorFor(Model => Model.Id)
+        </div>
+            @Html.EditorFor(Model => Model.Id)
+        </div>
+        <div>
+            @Html.LabelFor(Model => Model.varname)
+        </div>
+        <div>
+            @Html.EditorFor(Model => Model.varname)
+        </div>
+        <div>
+            @Html.LabelFor(Model => Model.datatype)
+        </div>
+        <div>
+            @Html.EditorFor(Model => Model.datatype)
+        </div>
+        <div>
+            <input type="submit" value="Create" />
+        </div>
+
+    </fieldset>
+}

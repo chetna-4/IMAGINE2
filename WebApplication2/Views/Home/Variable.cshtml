@@ -1,0 +1,110 @@
+﻿@model IList<WebApplication2.Models.Variable>
+
+@{
+    ViewBag.Title = "Variable";
+}
+
+
+<script type="text/javascript">
+    function OpenPop()
+    {
+        $("#myModal").modal('show')
+    }
+
+    function OpenPop2(my)
+    {
+        $('#myModal2').on('show.bs.modal', function (event) {
+            var model = '@Html.Raw(Json.Encode(Model))'
+            var variables = '{"variables":' + model + '}'
+            var obj = JSON.parse(variables);
+            for (var i = 0, l = obj.variables.length; i < l;i++)
+            {
+                if(obj.variables[i].Id==my)
+                {
+                    var Id = obj.variables[i].Id;
+                    var Name = obj.variables[i].Name;
+                    var Type = obj.variables[i].DataType;
+                    break;
+                }
+            }
+            var modal = $(this)
+            $('#Id').val(Id)
+            $('#Name').val(Name)
+            $('#DataType').val(Type)
+        })
+        $("#myModal2").modal('show')
+    }
+</script>
+<body>
+<br />
+<br />
+
+<div class="btn-group" role="group" aria-label="...">
+    <button type="button" class="btn btn-default" onclick="OpenPop()">Add</button>
+    <button type="button" class="btn btn-default">Modify</button>
+    <button type="button" class="btn btn-default">Delete</button>
+</div>
+
+<br />
+<br />
+<div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Datatype</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr  onclick="OpenPop2('@item.Id')" >
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.DataType</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+<div id="myModal" class="modal fade" style="width:500px; margin-left:750px; margin-top:350px;">
+     <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add Variable</h4>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to add the default variable</p>
+                <p class="text-warning"><small>Press close to cancel the operation.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="@Url.Action("About","Home")" type="button" class="btn btn-primary">Yes</a>
+            </div>
+    </div>
+</div>
+
+    <div id="myModal2" class="modal fade" style="width:500px; margin-left:750px; margin-top:350px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Variable Details</h4>
+            </div>
+            <div class="modal-body">
+                <p>Variable Id:</p>
+                <input type="text" class="form-control" id="Id" disabled="disabled"/>
+                <p>Variable Name:</p>
+                <input type="text" class="form-control" id="Name" disabled="disabled" />
+                <p>Variable Data Type:</p>
+                <input type="text" class="form-control" id="DataType" disabled="disabled" />
+                <br />
+                <label >Press close to go back</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</body>
+
