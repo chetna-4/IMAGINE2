@@ -36,5 +36,11 @@ namespace WebApplication2.Controllers
 
             return View(variables);
         }
+        [HttpPost]
+        public ActionResult Variable(List<Variable> variables)
+        {
+            variables.Add(new Variable { Id = variables.Count+1, Name = "Variable", DataType = "Int" });
+            return View(variables);
+        }
     }
 }

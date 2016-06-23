@@ -80,7 +80,15 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <a href="@Url.Action("About","Home")" type="button" class="btn btn-primary">Yes</a>
+                    @using(Html.BeginForm("Variable","Home",FormMethod.Post))
+                    {
+                        for (var i = 0; i < Model.Count; i++) { 
+                            @Html.HiddenFor(x => x[i].Id)
+                            @Html.HiddenFor(x => x[i].Name)
+                            @Html.HiddenFor(x => x[i].DataType)
+                        }
+                        <input type="submit" value="Yes" />
+                    }
             </div>
     </div>
 </div>
