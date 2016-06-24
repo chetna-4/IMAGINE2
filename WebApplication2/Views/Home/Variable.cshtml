@@ -1,4 +1,4 @@
-﻿@model IList<WebApplication2.Models.Variable>
+﻿@model WebApplication2.Models.VariablePageViewModel
 
 @{
     ViewBag.Title = "Variable";
@@ -6,8 +6,12 @@
 
 
 <script type="text/javascript">
-    function OpenPop()
+    function OpenPop(my)
     {
+        var model = '@Html.Raw(Json.Encode(Model))'
+        var variables = '{"variables":' + model + '}'
+        var obj = JSON.parse(variables);
+        $(" .modal-footer .hidden").val(my);
         $("#myModal").modal('show')
     }
 
@@ -17,13 +21,13 @@
             var model = '@Html.Raw(Json.Encode(Model))'
             var variables = '{"variables":' + model + '}'
             var obj = JSON.parse(variables);
-            for (var i = 0, l = obj.variables.length; i < l;i++)
+            for (var i = 0, l = obj.variables.Variables.length; i < l;i++)
             {
-                if(obj.variables[i].Id==my)
+                if(obj.variables.Variables[i].Id==my)
                 {
-                    var Id = obj.variables[i].Id;
-                    var Name = obj.variables[i].Name;
-                    var Type = obj.variables[i].DataType;
+                    var Id = obj.variables.Variables[i].Id;
+                    var Name = obj.variables.Variables[i].Name;
+                    var Type = obj.variables.Variables[i].DataType;
                     break;
                 }
             }
@@ -40,7 +44,18 @@
 <br />
 
 <div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-default" onclick="OpenPop()">Add</button>
+    
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Add
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" style="text-align:center;" aria-labelledby="dropdownMenu1">
+            @foreach(var item in Model.Types)
+            {
+                <li><button href="#" class="btn navbar-btn" onclick="OpenPop('@item')" >@item</button></li>
+            }
+        </ul>
+    
     <button type="button" class="btn btn-default">Modify</button>
     <button type="button" class="btn btn-default">Delete</button>
 </div>
@@ -57,7 +72,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Variables)
         {
             <tr  onclick="OpenPop2('@item.Id')" >
                 <td>@item.Id</td>
@@ -75,17 +90,23 @@
                 <h4 class="modal-title">Add Variable</h4>
             </div>
             <div class="modal-body">
-                <p>Do you want to add the default variable</p>
+                <p id="para">Do you want to add the default variable</p>
                 <p class="text-warning"><small>Press close to cancel the operation.</small></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    @using(Html.BeginForm("Variable","Home",FormMethod.Post))
+                    @using (Html.BeginForm("Variable", "Home", FormMethod.Post))
                     {
-                        for (var i = 0; i < Model.Count; i++) { 
-                            @Html.HiddenFor(x => x[i].Id)
-                            @Html.HiddenFor(x => x[i].Name)
-                            @Html.HiddenFor(x => x[i].DataType)
+                        @Html.Hidden("DataTypes", "", new { @class = "hidden" })
+                        for (var i = 0; i < Model.Variables.Count; i++)
+                        {
+                            @Html.HiddenFor(x => x.Variables[i].Id)
+                            @Html.HiddenFor(x => x.Variables[i].Name)
+                            @Html.HiddenFor(x => x.Variables[i].DataType)
+                        }
+                        for (var i = 0; i < Model.Types.Count; i++)
+                        {
+                            @Html.HiddenFor(x => x.Types[i])
                         }
                         <input type="submit" value="Yes" />
                     }

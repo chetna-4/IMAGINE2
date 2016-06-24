@@ -24,7 +24,6 @@ namespace WebApplication2.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
         public ActionResult Variable()
@@ -34,13 +33,18 @@ namespace WebApplication2.Controllers
             variables.Add(new Variable { Id = 2, Name = "Variable2", DataType = "String" });
             variables.Add(new Variable { Id = 3, Name = "Variable3", DataType = "Int" });
 
-            return View(variables);
+            VariablePageViewModel viewModel = new VariablePageViewModel();
+            viewModel.Variables = variables;
+            viewModel.Types = new List<string> { "Int", "String", "Real", "Bool" };
+
+
+            return View(viewModel);
         }
         [HttpPost]
-        public ActionResult Variable(List<Variable> variables)
+        public ActionResult Variable(string DataTypes,VariablePageViewModel variable)
         {
-            variables.Add(new Variable { Id = variables.Count+1, Name = "Variable", DataType = "Int" });
-            return View(variables);
+            variable.Variables.Add(new Variable { Id = variable.Variables.Count+1, Name = "Variable", DataType = DataTypes });
+            return View(variable);
         }
     }
 }

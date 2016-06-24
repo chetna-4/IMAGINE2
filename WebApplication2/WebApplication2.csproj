@@ -117,6 +117,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Variable.cs" />
+    <Compile Include="Models\VariablePageViewModel.cs" />
     <Compile Include="Models\variables1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
